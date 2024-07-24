@@ -24,9 +24,11 @@ import java.util.List;
 @RestController
 public class InteractiveController {
     private final RestTemplate restTemplate;
+    private final String openApiAccessToken;
 
-    public InteractiveController(RestTemplate restTemplate) {
+    public InteractiveController(RestTemplate restTemplate, String openApiAccessToken) {
         this.restTemplate = restTemplate;
+        this.openApiAccessToken = openApiAccessToken;
     }
 
     @PostMapping("/api/interaction")
@@ -78,7 +80,7 @@ public class InteractiveController {
     }
 
     private String requestGpt(String question) {
-        OpenAiService service = new OpenAiService("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", Duration.ZERO);
+        OpenAiService service = new OpenAiService(openApiAccessToken, Duration.ZERO);
         ChatCompletionRequest completionRequest1 = ChatCompletionRequest.builder()
                 .model("gpt-3.5-turbo")
                 .messages(Arrays.asList(new ChatMessage("user", question)))
